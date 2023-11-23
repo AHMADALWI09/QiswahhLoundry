@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Qiswah Loundry</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+</head>
+<header>
+    <!-- <marquee behavior="" direction="Right">Qiswah Loundry</marquee> -->
+    <h1 class="cool-title" , style="font-size: 100px;"> Qiswah Loundry
+        <img src="mesin.png" height="auto" width="150px">
+    </h1>
+
+</header>
+
+<body>
+
+
+    <section>
+        <h2>Daftar Cucian</h2>
+        <ul id="daftar-cucian">
+            <!-- Daftar cucian akan ditampilkan di sini -->
+        </ul>
+        <h2> Total : <ul id="TotalLoundry"></ul>
+        </h2>
+
+    </section>
+
+    <section>
+        <h2>Tambah Cucian Baru</h2>
+        <form id="form-cucian">
+            <label for="nama-cucian">Nama Cucian:</label>
+            <input type="text" id="nama-cucian" required>
+            <label for="status-cucian">Status Cucian:</label>
+            <select id="status_cucian">
+                <option id="cuci_setrika" value="7000">Cuci + Setrika</option>
+                <option id="cuci" value="5000">Cuci</option>
+                <option id="setrika" value="5000">Setrika</option>
+            </select>
+            <br>
+            <br>
+
+            <label for="berat-cucian">Berat Cucian:</label>
+            <input type="number" id="berat_cucian" required>
+            <br>
+
+            <label for="jenis-cucian">Jenis Cucian:</label>
+            <select id="jenis_cucian">
+                <option value="0">Ruguler</option>
+                <option value="1000">Kilat</option>
+                <option value="2000">Express</option>
+            </select>
+            <br>
+            <br>
+            <label for="tanggalLoundry">Tanggal Loundry:</label>
+            <input type="date" id="tanggalLoundry" name="tanggalLoundry">
+
+            <center>
+                <button type="button" onclick="Cek()">Total</button>
+                <br>
+                <br>
+                <button type="button" onclick="tambahCucian()">Tambah Cucian</button>
+
+
+            </center>
+        </form>
+    </section>\
+
+
+
+
+
+
+
+</body>
+
+
+
+<ul class="wrapper">
+    <li class="icon facebook" id="facebookIcon" onclick="keFacebook()">
+        <span class="tooltip">Facebook</span>
+        <span><i class="fab fa-facebook-f"></i></span>
+    </li>
+    <li class="icon twitter">
+        <span class="tooltip">Twitter</span>
+        <span><i class="fab fa-twitter"></i></span>
+    </li>
+    <li class="icon instagram" id="instagramIcon" onclick="redirectToInstagram()">
+        <span class="tooltip">Instagram</span>
+        <span><i class="fab fa-instagram"></i></span>
+    </li>
+    <li class="icon whatsapp" id="whatsappIcon" onclick="redirectToWhatsApp()">
+        <span class="tooltip">WhatsApp</span>
+        <span><i class="fab fa-whatsapp"></i></span>
+    </li>
+    <li class="icon youtube" id="iconYT" onclick="keYoutube()">
+        <span class="tooltip">Youtube</span>
+        <span><i class="fab fa-youtube"></i></span>
+    </li>
+</ul>
+<br>
+<br>
+<footer style="background-color: #f4cee5;">
+    <div class="address-container">
+        <div class="address-item">
+          <h3>Alamat:</h3>
+          <p>Jl. Raya Ps. Muara No.23, Muarabakti, Kec. Babelan, bekasi, Jawa Barat 17610, Indonesia</p>
+         
+        </div>
+        <div class="address-item">
+          <h3>Kontak</h3>
+          <p>Email: ahmadalwi0904@gmail.com</p>
+          <p>Telepon: +62 858-5351-8809</p>
+        </div>
+        <div class="address-item">
+            <h3>Owner Sosmed</h3>
+            
+            <span class="social-icons">
+                
+                <!-- Tambahkan ikon-ikon sosial media di sini -->
+                <i class="fab fa-facebook" style="width: 50px;" onclick="keFacebook()"></i>
+                <i class="fab fa-whatsapp" style="width: 50px;" onclick="redirectToWhatsApp()"></i>
+                <i class="fab fa-whatsapp" style="width: 50px;" onclick="redirectToWhatsApp2()"></i>
+                <i class="fab fa-instagram" style="width: 50px;" onclick="redirectToInstagram2()"></i>
+                <!-- Anda dapat menambahkan ikon sosial media lain sesuai kebutuhan -->
+            </span>
+        </div>
+        
+        
+          
+        
+      </div>
+<br>
+<br>
+<br>
+<br>
+</footer>
+
+
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inisialisasi data cucian
+        var daftarCucian = [];
+
+        // Fungsi untuk menambah cucian
+        window.tambahCucian = function () {
+            var namaCucian = document.getElementById('nama-cucian').value;
+            //var jenisCucian = document.getElementById('jenis-cucian').value;
+            var statusCucian = document.getElementById('status_cucian').value;
+            var beratCucian = document.getElementById('berat_cucian').value;
+            var jenisCucian = document.getElementById('jenis_cucian').value;
+            var tanggalLoundry = document.getElementById('tanggalLoundry').value;
+
+            // Validasi input
+            if (namaCucian && statusCucian) {
+                // Tambahkan cucian ke daftar
+                daftarCucian.push({ nama: namaCucian, status: statusCucian, berat: beratCucian, jenis: jenisCucian, tanggal: tanggalLoundry });
+
+                // Perbarui tampilan daftar cucian
+                perbaruiTampilanDaftarCucian();
+
+                // Kosongkan formulir
+                document.getElementById('form-cucian').reset();
+            } else {
+                alert('Silakan isi semua field!');
+            }
+        };
+
+        // Fungsi untuk memperbarui tampilan daftar cucian
+        function perbaruiTampilanDaftarCucian() {
+            var daftarCucianElement = document.getElementById('daftar-cucian');
+            daftarCucianElement.innerHTML = '';
+
+            // Tampilkan setiap cucian dalam daftar
+            daftarCucian.forEach(function (cucian) {
+                var listItem = document.createElement('li');
+                var listItem2 = document.createElement('li');
+                var listItem1 = document.createElement('li');
+                var listItem3 = document.createElement('li');
+                var listItem4 = document.createElement('li');
+
+                listItem.textContent = 'Nama: ' + cucian.nama;
+                listItem1.textContent = 'Status Cucian : ' + cucian.status;
+                listItem2.textContent = 'Berat Cucian : ' + cucian.berat + 'kg';
+                listItem3.textContent = 'Jenis Cucian: ' + cucian.jenis + '/kg';
+                listItem4.textContent = 'Tanggal Loundry: ' + cucian.tanggal;
+                daftarCucianElement.appendChild(listItem);
+                daftarCucianElement.appendChild(listItem1);
+                daftarCucianElement.appendChild(listItem2);
+                daftarCucianElement.appendChild(listItem3);
+                daftarCucianElement.appendChild(listItem4);
+            });
+        }
+    });
+    function Cek() {
+        var status_cucian, berat_cucian, jenis_cucian, TotalHasil, TotalLoundry2, hasilFormatted;
+
+        status_cucian = parseFloat(document.getElementById('status_cucian').value);
+        berat_cucian = parseFloat(document.getElementById('berat_cucian').value);
+        jenis_cucian = parseFloat(document.getElementById('jenis_cucian').value);
+
+        var hasilLoundry = parseFloat(status_cucian) * parseFloat(berat_cucian);
+        var type = parseFloat(jenis_cucian) * parseFloat(berat_cucian);
+
+        var TotalHasil = parseFloat(hasilLoundry) + parseFloat(type);
+        var hasilFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(TotalHasil);
+        document.getElementById('TotalLoundry').textContent = hasilFormatted;
+    }
+    //go to sosmed
+    function redirectToWhatsApp() {
+        // Change the phone number to the desired WhatsApp number
+        var phoneNumber = '6285853518809';
+        window.location.href = 'https://wa.me/' + phoneNumber;
+    }
+    function redirectToWhatsApp2() {
+        // Change the phone number to the desired WhatsApp number
+        var phoneNumber = '6289615234856';
+        window.location.href = 'https://wa.me/' + phoneNumber;
+    }
+    function redirectToInstagram() {
+        // Change the Instagram username in the URL to the desired username
+        var username = 'qiswahloundry';
+        window.location.href = 'https://www.instagram.com/' + username;
+    }
+    function redirectToInstagram2() {
+        // Change the Instagram username in the URL to the desired username
+        var username = 'aalwi09';
+        window.location.href = 'https://www.instagram.com/' + username;
+    }
+    function keFacebook() {
+        var username = 'ahmad.alwi.1612';
+        window.location.href = 'https://www.facebook.com/' + username;
+    }
+
+    function keYoutube() {
+        var username = '@ahmadalwi1273';
+        window.location.href = 'https://www.youtube.com/' + username;
+    }
+
+    document.getElementById('image-container').addEventListener('click', function() {
+        // handle click event, if needed
+      });
+</script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    header {
+        background-color: #f4cee5;
+        color: #191717;
+        text-align: center;
+        padding: 1em 0;
+     font-size: 70px;
+     
+    }
+    
+    section {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ecf0f1;
+        border-radius: 8px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+    
+    button {
+        background-color: #2ecc71;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #27ae60;
+    }
+    
+    
+        /*
+    Auther: Abdelrhman Said
+    */
+    
+    @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+    
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+    
+    *:focus,
+    *:active {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+    }
+    
+    html,
+    body {
+    
+    font-family: "Poppins", sans-serif;
+    place-items: center;
+    background: rgb(216, 87, 154);
+    background-image: url('bg.png');
+    }
+    
+    .wrapper {
+    display: inline-flex;
+    list-style: none;
+    }
+    
+    .wrapper .icon {
+    position: relative;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 15px;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .wrapper .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background: #ffffff;
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .wrapper .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: #ffffff;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .wrapper .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    }
+    
+    .wrapper .icon:hover span,
+    .wrapper .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+    }
+    
+    .wrapper .facebook:hover,
+    .wrapper .facebook:hover .tooltip,
+    .wrapper .facebook:hover .tooltip::before {
+    background: #1877F2;
+    color: #ffffff;
+    }
+    
+    .wrapper .twitter:hover,
+    .wrapper .twitter:hover .tooltip,
+    .wrapper .twitter:hover .tooltip::before {
+    background: #1DA1F2;
+    color: #ffffff;
+    }
+    
+    .wrapper .instagram:hover,
+    .wrapper .instagram:hover .tooltip,
+    .wrapper .instagram:hover .tooltip::before {
+    background: #E4405F;
+    color: #ffffff;
+    }
+    
+    .wrapper .whatsapp:hover,
+    .wrapper .whatsapp:hover .tooltip,
+    .wrapper .whatsapp:hover .tooltip::before {
+    background: #3eb80a;
+    color: #ffffff;
+    }
+    
+    .wrapper .youtube:hover,
+    .wrapper .youtube:hover .tooltip,
+    .wrapper .youtube:hover .tooltip::before {
+    background: #CD201F;
+    color: #ffffff;
+    }
+    
+    
+    /* -- YouTube Link Styles -- */
+    
+    #source-link {
+      top: 60px;
+    }
+    
+    #source-link>i {
+      color: rgb(94, 106, 210);
+    }
+    
+    #yt-link {
+      top: 10px;
+    }
+    
+    #yt-link>i {
+      color: rgb(219, 31, 106);
+    
+    }
+    
+    .meta-link {
+      align-items: center;
+      backdrop-filter: blur(3px);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      display: inline-flex;
+      gap: 5px;
+      left: 10px;
+      padding: 10px 20px;
+      position: fixed;
+      text-decoration: none;
+      transition: background-color 600ms, border-color 600ms;
+      z-index: 10000;
+    }
+    
+    .meta-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .meta-link>i,
+    .meta-link>span {
+      height: 20px;
+      line-height: 20px;
+    }
+    
+    .meta-link>span {
+      color: white;
+      font-family: "Rubik", sans-serif;
+      transition: color 600ms;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .wrapper {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      position: fixed;
+      bottom: 10px; /* Ubah nilai bottom ke 10px untuk menempatkannya di pojok kiri bawah */
+      left: 10px;   /* Ubah nilai left ke 10px untuk menempatkannya di pojok kiri bawah */
+      display: flex;
+      z-index: 1000; /* Pastikan di atas konten lainnya */
+    }
+    
+    .icon {
+      margin: 0 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .icon:hover {
+      transform: scale(1.2);
+    }
+    
+    .tooltip {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      background-color: #333;
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+    }
+    
+    .icon:hover .tooltip {
+      opacity: 1;
+    }
+    .cool-title {
+      font-size: 3em;
+      color: #3498db;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      letter-spacing: 2px;
+      animation: coolTitleAnimation 2s ease-in-out infinite alternate;
+      font-family: Calibri, Helvetica, Arial, sans-serif;
+    }
+    .cool-title2{
+      right: 200px;
+    }
+    
+    .container {
+      text-align: center;
+    }
+    
+    .centered {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      size: 10px;
+    }
+    
+    .caption {
+      margin-top: 10px;
+    }/* foto */
+    
+    .container {
+      position: relative;
+    }
+    
+    .bottom-right {
+      position: absolute;
+      bottom: 19px;
+      right: 230px;
+    }
+    .container2 {
+      text-align: right;
+      position: relative;
+    }
+    
+    .centered2-text {
+      position: absolute;
+      left: 55%;
+      transform: translateX(-50%);
+      font-size: 3em;
+      color: #3498db;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      letter-spacing: 2px;
+      animation: coolTitleAnimation 2s ease-in-out infinite alternate;
+      font-family: Calibri, Helvetica, Arial, sans-serif;
+    
+    }
+    .wa{
+     border-radius: 10px;
+            font-size: 24px; /* Atur ukuran ikon sesuai keinginan Anda */
+            color:  #2ecc71;
+    }
+    .wa2{
+      border-radius: 10px;
+             font-size: 24px; /* Atur ukuran ikon sesuai keinginan Anda */
+             color:  #2ecc71;
+     }
+    .fab {
+      transform: scale(2.10); /* Atur faktor skala sesuai keinginan Anda */
+    }
+    footer {
+      background-color: #333;
+      color: #170303;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .address-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .address-item {
+      flex: 1;
+      text-align: center;
+      margin: 10px;
+    }
+    
+    .address-item h3 {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+    
+    .address-item p {
+      margin: 0;
+      font-size: 0.9em;
+    }
+    @keyframes coolTitleAnimation {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-10px);
+      }
+    }
+    
+    
+</style>
